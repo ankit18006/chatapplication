@@ -1,0 +1,33 @@
+services:
+  # ── Web service (Django + Daphne ASGI) ─────────────────────────────────
+  - type: web
+    name: nexuschat
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true          # Render generates a secure random value
+
+      - key: DEBUG
+        value: "False"
+
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: nexuschat-redis
+          property: connectionString
+
+      # Render auto-sets RENDER_EXTERNAL_HOSTNAME — used in ALLOWED_HOSTS
+
+    disk:
+      name: media
+      mountPath: /app/media
+      sizeGB: 1
+
+  # ── Redis ───────────────────────────────────────────────────────────────
+  - type: redis
+    name: nexuschat-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru

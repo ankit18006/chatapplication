@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Create Account — NexusChat{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+  <div class="auth-bg">
+    <div class="auth-orb auth-orb-1"></div>
+    <div class="auth-orb auth-orb-2"></div>
+    <div class="auth-orb auth-orb-3"></div>
+  </div>
+  <div class="auth-card auth-card-wide">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M4 8C4 5.79 5.79 4 8 4h16c2.21 0 4 1.79 4 4v12c0 2.21-1.79 4-4 4H18l-6 4v-4H8c-2.21 0-4-1.79-4-4V8z" fill="url(#lg2)"/>
+          <defs>
+            <linearGradient id="lg2" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7C6FF7"/>
+              <stop offset="1" stop-color="#4FC3F7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="logo-text">NexusChat</span>
+    </div>
+
+    <h1 class="auth-title">Create account</h1>
+    <p class="auth-subtitle">Join and start messaging instantly</p>
+
+    {% if form.errors %}
+      <div class="alert alert-error">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}{{ error }} {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" name="first_name" class="form-input" placeholder="First name" value="{{ form.first_name.value|default:'' }}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" name="last_name" class="form-input" placeholder="Last name" value="{{ form.last_name.value|default:'' }}" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-input" placeholder="Choose a username" value="{{ form.username.value|default:'' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-input" placeholder="your@email.com" value="{{ form.email.value|default:'' }}" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password1" class="form-input" placeholder="Create password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" name="password2" class="form-input" placeholder="Confirm password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary btn-full">Create Account</button>
+    </form>
+
+    <p class="auth-footer">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}
